@@ -12,6 +12,7 @@ import swal from 'sweetalert2';
 export class FormComponent implements OnInit {
   private cliente: Cliente = new Cliente();
   private titulo = 'Crear cliente';
+  private errores: string[];
 
   constructor(
     private clienteService: ClienteService,
@@ -34,26 +35,38 @@ export class FormComponent implements OnInit {
     });
   }
 
-  public create(): void {
+  create(): void {
     // console.log(this.cliente);
-    this.clienteService.create(this.cliente).subscribe(clienteRes => {
-      swal(
-        'Nuevo cliente',
-        `Cliente ${clienteRes.nombre} creado con éxtio`,
-        'success'
-      );
-      return this.router.navigate(['/clientes']);
-    });
+    this.clienteService.create(this.cliente).subscribe(
+      clienteRes => {
+        swal(
+          'Nuevo cliente',
+          `Cliente ${clienteRes.nombre} creado con éxtio`,
+          'success'
+        );
+        return this.router.navigate(['/clientes']);
+      },
+      err => {
+        this.errores = err.error.errors as string[];
+        console.error(err.status, err.error.errors);
+      }
+    );
   }
 
   update(): void {
-    this.clienteService.update(this.cliente).subscribe(clienteRes => {
-      swal(
-        'Cliente actualizado',
-        `Cliente ${clienteRes.nombre} actualizado con éxtio`,
-        'success'
-      );
-      return this.router.navigate(['/clientes']);
-    });
+    this.clienteService.update(this.cliente).subscribe(
+      clienteRes => {
+        swal(
+          'Cliente actualizado',
+          `Cliente ${clienteRes.nombre} actualizado con éxtio`,
+          'success'
+        );
+        return this.router.navigate(['/clientes']);
+      },
+      err => {
+        this.errores = err.error.errors as string[];
+        console.error(err.status, err.error.errors);
+      }
+    );
   }
 }
