@@ -34,9 +34,9 @@
         <tr *ngFor="let cliente of clientes">
           <th>{{ cliente.id }}</th>
           <th>{{ cliente.nombre }}</th>
-          <th>{{ cliente.apellido }}</th>
+          <th>{{ cliente.apellido | uppercase }}</th>
           <th>{{ cliente.email }}</th>
-          <th>{{ cliente.createAt }}</th>
+          <th>{{ cliente.createAt | date: "fullDate" }}</th>
           <th>
             <button
               type="button"
