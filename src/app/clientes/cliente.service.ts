@@ -16,25 +16,25 @@ export class ClienteService {
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  getClientes(): Observable<Cliente[]> {
+  getClientes(page: number): Observable<any> {
     // Se convierte en un observable
     // return of(CLIENTES);
     // return this.http.get<Cliente[]>(this.urlEndpPoint);
-    return this.http.get(this.urlEndpPoint).pipe(
-      tap(response => {
-        const clientes = response as Cliente[];
-        clientes.forEach(cliente => {
+    return this.http.get(`${this.urlEndpPoint}/page/${page}`).pipe(
+      tap((response: any) => {
+        (response.content as Cliente[]).forEach(cliente => {
           console.log(cliente);
         });
       }),
-      map(response => {
-        const clientes = response as Cliente[];
-
-        return clientes.map(cliente => {
+      map((response: any) => {
+        (response.content as Cliente[]).map(cliente => {
           cliente.nombre = cliente.nombre.toUpperCase();
           // cliente.createAt = formatDate(cliente.createAt, 'fullDate', 'es');
           return cliente;
         });
+        // Se retorna el response ya que contiene toda la informacion de la paginacion
+        // y solo se modifica el contenido del atributo content
+        return response;
       })
     );
   }
