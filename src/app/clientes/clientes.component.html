@@ -32,7 +32,15 @@
       </thead>
       <tbody>
         <tr *ngFor="let cliente of clientes">
-          <th>{{ cliente.id }}</th>
+          <th>
+            <button
+              type="button"
+              [routerLink]="['/clientes/ver', cliente.id]"
+              class="btn btn-success btn-sm"
+            >
+              {{ cliente.id }}
+            </button>
+          </th>
           <th>{{ cliente.nombre }}</th>
           <th>{{ cliente.apellido | uppercase }}</th>
           <th>{{ cliente.email }}</th>
