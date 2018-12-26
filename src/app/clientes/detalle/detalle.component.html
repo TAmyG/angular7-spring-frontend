@@ -12,7 +12,7 @@
               {{ cliente.createAt | date: "fullDate" }}
             </li>
           </ul>
-          <div class="input-group">
+          <div class="input-group mb-3">
             <div class="custom-file">
               <input
                 type="file"
@@ -31,9 +31,23 @@
                 type="button"
                 id="inputGroupFileAddon04"
                 (click)="subirFoto()"
+                [disabled]="!fotoSeleccionada"
               >
                 Subir
               </button>
+            </div>
+          </div>
+
+          <div class="progress" *ngIf="progreso > 0" style="height:40px;">
+            <div
+              class="progress-bar progress-bar-striped"
+              role="progressbar"
+              [ngStyle]="{ width: progreso + '%' }"
+              attr.aria-valuenow="{{ progreso }}"
+              aria-valuemin="0"
+              aria-valuemax="100"
+            >
+              {{ progreso }}%
             </div>
           </div>
         </div>
