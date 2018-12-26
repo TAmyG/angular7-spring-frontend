@@ -1,3 +1,8 @@
+<app-detalle
+  *ngIf="clienteSeleccionado"
+  [cliente]="clienteSeleccionado"
+></app-detalle>
+
 <div class="card border-primary mb-3">
   <div class="card-header">Clientes</div>
   <div class="card-body text-primary">
@@ -35,7 +40,7 @@
           <th>
             <button
               type="button"
-              [routerLink]="['/clientes/ver', cliente.id]"
+              (click)="abrirModal(cliente)"
               class="btn btn-success btn-sm"
             >
               {{ cliente.id }}
