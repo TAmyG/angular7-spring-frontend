@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { formatDate } from '@angular/common';
 
 import { Cliente } from './cliente';
-import { CLIENTES } from './clientes.json';
 import { Observable, of, throwError } from 'rxjs';
 import { map, catchError, tap } from 'rxjs/operators';
 import {
@@ -13,6 +12,7 @@ import {
 } from '@angular/common/http';
 import swal from 'sweetalert2';
 import { Router } from '@angular/router';
+import { Region } from './region';
 
 @Injectable()
 export class ClienteService {
@@ -20,6 +20,10 @@ export class ClienteService {
   private httpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
 
   constructor(private http: HttpClient, private router: Router) {}
+
+  getRegiones(): Observable<Region[]> {
+    return this.http.get<Region[]>(`${this.urlEndpPoint}/regiones`);
+  }
 
   getClientes(page: number): Observable<any> {
     // Se convierte en un observable
