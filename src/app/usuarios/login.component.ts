@@ -17,7 +17,16 @@ export class LoginComponent implements OnInit {
     this.usuario = new Usuario();
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    if (this.authService.isAuthenticated()) {
+      swal(
+        'Login',
+        `Hola ${this.authService.usuario.username} ya estas autenticado`,
+        'info'
+      );
+      this.router.navigate(['/clientes']);
+    }
+  }
 
   login(): void {
     console.log(this.usuario);
@@ -26,12 +35,22 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    this.authService.login(this.usuario).subscribe(response => {
-      console.log(response);
-      const payload = JSON.parse(atob(response.access_token.split('.')[1]));
-      console.log(payload);
-      this.router.navigate(['/clientes']);
-      swal('Login', `Hola ${payload.user_name}`, 'success');
-    });
+    this.authService.login(this.usuario).subscribe(
+      response => {
+        console.log(response);
+
+        this.authService.guardarUsuario(response.access_token);
+        this.authService.guardarToken(response.access_token);
+
+        const usuario = this.authService.usuario;
+        this.router.navigate(['/clientes']);
+        swal('Login', `Hola ${usuario.username}`, 'success');
+      },
+      err => {
+        if (err.status === 400) {
+          swal('Error Login', 'Credenciales incorrectas', 'error');
+        }
+      }
+    );
   }
 }

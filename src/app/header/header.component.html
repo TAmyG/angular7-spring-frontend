@@ -28,8 +28,18 @@
       </li>
     </ul>
     <ul class="navbar-nav navbar-right">
-      <li>
-        <a class="btn btn-outline-primary" routerLink="[/login]">Login</a>
+      <li *ngIf="!authService.isAuthenticated()">
+        <a class="btn btn-outline-primary" routerLink="/login">Login</a>
+      </li>
+
+      <li *ngIf="authService.isAuthenticated()">
+        <button
+          (click)="logout()"
+          class="btn btn-outline-primary"
+          type="submit"
+        >
+          Sign out
+        </button>
       </li>
     </ul>
   </div>
