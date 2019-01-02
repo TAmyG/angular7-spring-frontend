@@ -2,19 +2,21 @@ import { Injectable } from '@angular/core';
 import { formatDate } from '@angular/common';
 
 import { Cliente } from './cliente';
-import { CLIENTES } from './clientes.json';
-import { Observable, of, throwError } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { map, catchError, tap } from 'rxjs/operators';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import swal from 'sweetalert2';
+import { HttpClient, HttpRequest, HttpEvent } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { Region } from './region';
 
 @Injectable()
 export class ClienteService {
   private urlEndpPoint = 'http://localhost:8080/api/clientes';
-  private httpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
 
   constructor(private http: HttpClient, private router: Router) {}
+
+  getRegiones(): Observable<Region[]> {
+    return this.http.get<Region[]>(`${this.urlEndpPoint}/regiones`);
+  }
 
   getClientes(page: number): Observable<any> {
     // Se convierte en un observable
@@ -40,63 +42,73 @@ export class ClienteService {
   }
 
   create(cliente: Cliente): Observable<Cliente> {
-    return this.http
-      .post(this.urlEndpPoint, cliente, {
-        headers: this.httpHeaders
-      })
-      .pipe(
-        map((response: any) => response.cliente as Cliente),
-        catchError(e => {
-          if (e.status === 400) {
-            return throwError(e);
-          }
-          console.log(e.error.mensaje);
-          swal(e.error.mensaje, e.error.error, 'error');
+    return this.http.post(this.urlEndpPoint, cliente).pipe(
+      map((response: any) => response.cliente as Cliente),
+      catchError(e => {
+        if (e.status === 400) {
           return throwError(e);
-        })
-      );
+        }
+        if (e.error.mensaje) {
+          console.log(e.error.mensaje);
+        }
+        return throwError(e);
+      })
+    );
   }
 
   getCliente(id: number): Observable<Cliente> {
     return this.http.get<Cliente>(`${this.urlEndpPoint}/${id}`).pipe(
       catchError(e => {
-        this.router.navigate(['/clientes']);
-        console.log(e.error.mensaje);
-        swal('Error', e.error.mensaje, 'error');
+        if (e.status !== 401 && e.error.mensaje) {
+          this.router.navigate(['/clientes']);
+          console.log(e.error.mensaje);
+        }
+
         return throwError(e);
       })
     );
   }
 
   update(cliente: Cliente): Observable<Cliente> {
-    return this.http
-      .put(`${this.urlEndpPoint}/${cliente.id}`, cliente, {
-        headers: this.httpHeaders
-      })
-      .pipe(
-        map((response: any) => response.cliente as Cliente),
-        catchError(e => {
-          if (e.status === 400) {
-            return throwError(e);
-          }
-          console.log(e.error.mensaje);
-          swal(e.error.mensaje, e.error.error, 'error');
+    return this.http.put(`${this.urlEndpPoint}/${cliente.id}`, cliente).pipe(
+      map((response: any) => response.cliente as Cliente),
+      catchError(e => {
+        if (e.status === 400) {
           return throwError(e);
-        })
-      );
+        }
+        if (e.error.mensaje) {
+          console.log(e.error.mensaje);
+        }
+        return throwError(e);
+      })
+    );
   }
 
   delete(id: number): Observable<Cliente> {
-    return this.http
-      .delete<Cliente>(`${this.urlEndpPoint}/${id}`, {
-        headers: this.httpHeaders
-      })
-      .pipe(
-        catchError(e => {
+    return this.http.delete<Cliente>(`${this.urlEndpPoint}/${id}`).pipe(
+      catchError(e => {
+        if (e.error.mensaje) {
           console.log(e.error.mensaje);
-          swal(e.error.mensaje, e.error.error, 'error');
-          return throwError(e);
-        })
-      );
+        }
+        return throwError(e);
+      })
+    );
+  }
+
+  subirFoto(archivo: File, id): Observable<HttpEvent<{}>> {
+    const formData = new FormData();
+    formData.append('archivo', archivo);
+    formData.append('id', id);
+
+    const req = new HttpRequest(
+      'POST',
+      `${this.urlEndpPoint}/upload`,
+      formData,
+      {
+        reportProgress: true
+      }
+    );
+
+    return this.http.request(req);
   }
 }

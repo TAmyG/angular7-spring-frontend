@@ -1,9 +1,15 @@
+<app-detalle
+  *ngIf="clienteSeleccionado"
+  [cliente]="clienteSeleccionado"
+></app-detalle>
+
 <div class="card border-primary mb-3">
   <div class="card-header">Clientes</div>
   <div class="card-body text-primary">
     <h5 class="card-title">Listado de clientes</h5>
     <div class="my-2 text-left">
       <button
+        *ngIf="authService.hasRole('ROLE_ADMIN')"
         class="btn btn-rounded btn-primary"
         [routerLink]="['/clientes/form']"
       >
@@ -21,23 +27,40 @@
     >
       <thead>
         <tr>
-          <th>id</th>
+          <th *ngIf="authService.hasRole('ROLE_USER')">#</th>
           <th>Nombre</th>
           <th>Apellido</th>
           <th>Email</th>
           <th>Fecha</th>
-          <th>Editar</th>
-          <th>Eliminar</th>
+          <th *ngIf="authService.hasRole('ROLE_ADMIN')">Editar</th>
+          <th *ngIf="authService.hasRole('ROLE_ADMIN')">Eliminar</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let cliente of clientes">
-          <th>{{ cliente.id }}</th>
+          <th *ngIf="authService.hasRole('ROLE_USER')">
+            <img
+              *ngIf="cliente?.foto"
+              (click)="abrirModal(cliente)"
+              src="http://localhost:8080/api/uploads/img/{{ cliente.foto }}"
+              alt="{{ cliente.foto }}"
+              class="img-thumbnail rounded"
+              style="width:64px; cursor:pointer;"
+            />
+            <img
+              *ngIf="!cliente?.foto"
+              (click)="abrirModal(cliente)"
+              src="http://localhost:8080/images/not-usuario.png"
+              alt="Sin foto"
+              class="img-thumbnail rounded"
+              style="width:64px; cursor:pointer;"
+            />
+          </th>
           <th>{{ cliente.nombre }}</th>
           <th>{{ cliente.apellido | uppercase }}</th>
           <th>{{ cliente.email }}</th>
           <th>{{ cliente.createAt | date: "fullDate" }}</th>
-          <th>
+          <th *ngIf="authService.hasRole('ROLE_ADMIN')">
             <button
               type="button"
               name="editar"
@@ -47,7 +70,7 @@
               Editar
             </button>
           </th>
-          <th>
+          <th *ngIf="authService.hasRole('ROLE_ADMIN')">
             <button
               type="button"
               name="eliminar"
