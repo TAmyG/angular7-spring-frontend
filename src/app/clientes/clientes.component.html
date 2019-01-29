@@ -27,7 +27,8 @@
     >
       <thead>
         <tr>
-          <th *ngIf="authService.hasRole('ROLE_USER')">#</th>
+          <!-- <th *ngIf="authService.hasRole('ROLE_USER')">#</th> -->
+          <th>#</th>
           <th>Nombre</th>
           <th>Apellido</th>
           <th>Email</th>
@@ -38,7 +39,8 @@
       </thead>
       <tbody>
         <tr *ngFor="let cliente of clientes">
-          <th *ngIf="authService.hasRole('ROLE_USER')">
+          <!-- <th *ngIf="authService.hasRole('ROLE_USER')"> -->
+          <th>
             <img
               *ngIf="cliente?.foto"
               (click)="abrirModal(cliente)"
