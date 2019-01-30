@@ -78,6 +78,17 @@
                 />
               </div>
             </div>
+
+            <div class="row">
+              <button
+                type="button"
+                class="btn btn-success btn-sm"
+                [routerLink]="['/facturas/form', cliente.id]"
+              >
+                Crear factura
+              </button>
+            </div>
+
             <div class="row">
               <div
                 class="alert alert-info my-4"
@@ -97,6 +108,7 @@
                     <th>fecha</th>
                     <th>total</th>
                     <th>detalle</th>
+                    <th>eliminar</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -112,6 +124,15 @@
                         [routerLink]="['/facturas', factura.id]"
                       >
                         ver
+                      </button>
+                    </td>
+                    <td>
+                      <button
+                        class="btn btn-danger btn-sm"
+                        type="button"
+                        (click)="delete(factura)"
+                      >
+                        eliminar
                       </button>
                     </td>
                   </tr>

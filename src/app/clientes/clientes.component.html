@@ -33,6 +33,7 @@
           <th>Apellido</th>
           <th>Email</th>
           <th>Fecha</th>
+          <th>Crear Factura</th>
           <th *ngIf="authService.hasRole('ROLE_ADMIN')">Editar</th>
           <th *ngIf="authService.hasRole('ROLE_ADMIN')">Eliminar</th>
         </tr>
@@ -62,6 +63,15 @@
           <th>{{ cliente.apellido | uppercase }}</th>
           <th>{{ cliente.email }}</th>
           <th>{{ cliente.createAt | date: "fullDate" }}</th>
+          <th>
+            <button
+              type="button"
+              class="btn btn-success btn-sm"
+              [routerLink]="['/facturas/form', cliente.id]"
+            >
+              Crear factura
+            </button>
+          </th>
           <th *ngIf="authService.hasRole('ROLE_ADMIN')">
             <button
               type="button"

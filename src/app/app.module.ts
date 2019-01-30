@@ -12,7 +12,7 @@ import { PaginatorComponent } from './paginator/paginator.component';
 
 import { ClienteService } from './clientes/cliente.service';
 import { RouterModule, Routes, Router } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { registerLocaleData } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDatepickerModule } from '@angular/material';
@@ -25,6 +25,10 @@ import { RoleGuard } from './usuarios/guards/role.guard';
 import { TokenInterceptor } from './usuarios/interceptors/token.interceptor';
 import { AuthInterceptor } from './usuarios/interceptors/auth.interceptor';
 import { DetalleFacturaComponent } from './facturas/detalle-factura.component';
+import { FacturasComponent } from './facturas/facturas.component';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 registerLocaleData(localeES, 'es');
 const routes: Routes = [
@@ -45,7 +49,8 @@ const routes: Routes = [
     data: { role: 'ROLE_ADMIN' }
   },
   { path: 'login', component: LoginComponent },
-  { path: 'facturas/:id', component: DetalleFacturaComponent }
+  { path: 'facturas/:id', component: DetalleFacturaComponent },
+  { path: 'facturas/form/:clienteId', component: FacturasComponent }
   // { path: 'clientes/ver/:id', component: DetalleComponent }
 ];
 
@@ -60,7 +65,8 @@ const routes: Routes = [
     PaginatorComponent,
     DetalleComponent,
     LoginComponent,
-    DetalleFacturaComponent
+    DetalleFacturaComponent,
+    FacturasComponent
   ],
   imports: [
     BrowserModule,
@@ -69,7 +75,11 @@ const routes: Routes = [
     RouterModule.forRoot(routes),
     BrowserAnimationsModule,
     MatDatepickerModule,
-    MatMomentDateModule
+    MatMomentDateModule,
+    ReactiveFormsModule,
+    MatAutocompleteModule,
+    MatInputModule,
+    MatFormFieldModule
   ],
   providers: [
     ClienteService,

@@ -80,6 +80,7 @@ export class ClientesComponent implements OnInit {
   }
 
   abrirModal(cliente: Cliente) {
+    console.log('-------->', cliente);
     this.modalService.abrirModal();
     this.clienteSeleccionado = cliente;
   }
