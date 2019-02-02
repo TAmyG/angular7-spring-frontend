@@ -48,21 +48,24 @@
 
       <div class="form-group row">
         <div class="col-sm-6">
-          <mat-form-field class="example-full-width">
+          <mat-form-field>
             <input
               type="text"
               placeholder="Agregar producto"
-              aria-label="Number"
+              aria-label="Productos"
               matInput
               [formControl]="autocompleteControl"
               [matAutocomplete]="auto"
             />
-            <mat-autocomplete #auto="matAutocomplete">
+            <mat-autocomplete
+              #auto="matAutocomplete"
+              [displayWith]="mostrarNombre"
+            >
               <mat-option
-                *ngFor="let option of (productosFiltrados | async)"
-                [value]="option"
+                *ngFor="let producto of (productosFiltrados | async)"
+                [value]="producto"
               >
-                {{ option }}
+                {{ producto.nombre }}
               </mat-option>
             </mat-autocomplete>
           </mat-form-field>
