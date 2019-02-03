@@ -27,21 +27,21 @@
     >
       <thead>
         <tr>
-          <!-- <th *ngIf="authService.hasRole('ROLE_USER')">#</th> -->
-          <th>#</th>
+          <th *ngIf="authService.hasRole('ROLE_USER')">#</th>
+          <!-- <th>#</th> -->
           <th>Nombre</th>
           <th>Apellido</th>
           <th>Email</th>
           <th>Fecha</th>
-          <th>Crear Factura</th>
+          <th *ngIf="authService.hasRole('ROLE_ADMIN')">Crear Factura</th>
           <th *ngIf="authService.hasRole('ROLE_ADMIN')">Editar</th>
           <th *ngIf="authService.hasRole('ROLE_ADMIN')">Eliminar</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let cliente of clientes">
-          <!-- <th *ngIf="authService.hasRole('ROLE_USER')"> -->
-          <th>
+          <th *ngIf="authService.hasRole('ROLE_USER')">
+            <!-- <th> -->
             <img
               *ngIf="cliente?.foto"
               (click)="abrirModal(cliente)"
@@ -63,7 +63,7 @@
           <th>{{ cliente.apellido | uppercase }}</th>
           <th>{{ cliente.email }}</th>
           <th>{{ cliente.createAt | date: "fullDate" }}</th>
-          <th>
+          <th *ngIf="authService.hasRole('ROLE_ADMIN')">
             <button
               type="button"
               class="btn btn-success btn-sm"

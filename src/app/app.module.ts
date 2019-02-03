@@ -49,8 +49,18 @@ const routes: Routes = [
     data: { role: 'ROLE_ADMIN' }
   },
   { path: 'login', component: LoginComponent },
-  { path: 'facturas/:id', component: DetalleFacturaComponent },
-  { path: 'facturas/form/:clienteId', component: FacturasComponent }
+  {
+    path: 'facturas/:id',
+    component: DetalleFacturaComponent,
+    canActivate: [AuthGuard, RoleGuard],
+    data: { role: 'ROLE_USER' }
+  },
+  {
+    path: 'facturas/form/:clienteId',
+    component: FacturasComponent,
+    canActivate: [AuthGuard, RoleGuard],
+    data: { role: 'ROLE_ADMIN' }
+  }
   // { path: 'clientes/ver/:id', component: DetalleComponent }
 ];
 

@@ -79,7 +79,7 @@
               </div>
             </div>
 
-            <div class="row">
+            <div class="row" *ngIf="authService.hasRole('ROLE_ADMIN')">
               <button
                 type="button"
                 class="btn btn-success btn-sm"
@@ -108,7 +108,7 @@
                     <th>fecha</th>
                     <th>total</th>
                     <th>detalle</th>
-                    <th>eliminar</th>
+                    <th *ngIf="authService.hasRole('ROLE_ADMIN')">eliminar</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -126,7 +126,7 @@
                         ver
                       </button>
                     </td>
-                    <td>
+                    <td *ngIf="authService.hasRole('ROLE_ADMIN')">
                       <button
                         class="btn btn-danger btn-sm"
                         type="button"
