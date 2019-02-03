@@ -123,7 +123,7 @@ export class FacturasComponent implements OnInit {
           `Factura ${factura.descripcion} creada con exito`,
           'success'
         );
-        this.router.navigate(['/clientes']);
+        this.router.navigate(['/facturas', factura.id]);
       });
     }
   }

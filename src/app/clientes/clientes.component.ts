@@ -20,8 +20,8 @@ export class ClientesComponent implements OnInit {
   constructor(
     private clienteService: ClienteService,
     private activatedRoute: ActivatedRoute,
-    private authService: AuthService,
-    private modalService: ModalService
+    public authService: AuthService,
+    public modalService: ModalService
   ) {}
 
   ngOnInit() {
