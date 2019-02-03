@@ -7,7 +7,7 @@
       >
     </h4>
 
-    <form action="">
+    <form #facturaForm="ngForm">
       <div class="form-group row" *ngIf="factura.cliente">
         <label for="cliente" class="col-sm-2 col-form-label">Cliente</label>
         <div class="col-sm-6">
@@ -31,7 +31,18 @@
             type="text"
             [(ngModel)]="factura.descripcion"
             class="form-control"
+            required
+            #descripcion="ngModel"
           />
+          <div
+            class="alert alert-danger"
+            *ngIf="
+              (descripcion.invalid && descripcion.touched) ||
+              (descripcion.invalid && facturaForm.submitted)
+            "
+          >
+            La descripcion es requerida
+          </div>
         </div>
       </div>
 
@@ -70,6 +81,13 @@
               </mat-option>
             </mat-autocomplete>
           </mat-form-field>
+
+          <div
+            class="alert alert-danger"
+            *ngIf="autocompleteControl.invalid && facturaForm.submitted"
+          >
+            La factura no puede estar vacia
+          </div>
         </div>
       </div>
 
@@ -129,6 +147,7 @@
             type="submit"
             value="Crear Factura"
             class="btn btn-secondary"
+            (click)="create(facturaForm)"
           />
         </div>
       </div>

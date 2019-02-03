@@ -1,6 +1,5 @@
 import { ItemFactura } from './item-factura';
 import { Cliente } from 'src/app/clientes/cliente';
-import { totalmem } from 'os';
 
 export class Factura {
   id: number;
